@@ -41,6 +41,7 @@ const AppBase = (props) => {
     return Object.entries(channelLists).map(([id, data]) => ({
       id,
       name: data.name || id,
+      icon: data.icon || null,
     }));
   }, [channelLists]);
 

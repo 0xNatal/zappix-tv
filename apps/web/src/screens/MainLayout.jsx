@@ -70,9 +70,9 @@ const MainLayout = ({deviceId, credentials}) => {
     });
   }, [deviceId, activeListId]);
 
-  const createList = useCallback((name) => {
+  const createList = useCallback((name, icon) => {
     const id = Date.now().toString(36);
-    const list = {name, channelIds: [], updatedAt: Date.now()};
+    const list = {name, channelIds: [], updatedAt: Date.now(), ...(icon && {icon})};
     updateDevice(deviceId, {[`channelLists/${id}`]: list});
     setChannelLists(prev => ({...prev, [id]: list}));
     setActiveListId(id);
@@ -94,6 +94,14 @@ const MainLayout = ({deviceId, credentials}) => {
     setChannelLists(prev => ({
       ...prev,
       [listId]: {...prev[listId], name},
+    }));
+  }, [deviceId]);
+
+  const setListIcon = useCallback((listId, icon) => {
+    updateDevice(deviceId, {[`channelLists/${listId}/icon`]: icon || null});
+    setChannelLists(prev => ({
+      ...prev,
+      [listId]: {...prev[listId], icon: icon || null},
     }));
   }, [deviceId]);
 
@@ -155,6 +163,7 @@ const MainLayout = ({deviceId, credentials}) => {
             onCreateList={createList}
             onDeleteList={deleteList}
             onRenameList={renameList}
+            onSetListIcon={setListIcon}
           />
         ) : (
           <SettingsTab credentials={credentials} deviceId={deviceId} />

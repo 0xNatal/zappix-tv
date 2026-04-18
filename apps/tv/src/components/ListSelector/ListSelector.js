@@ -23,9 +23,13 @@ const ListSelector = ({lists, activeListId, onSelect, visible}) => {
             onClick={() => onSelect(list.id)}
             title={list.name}
           >
-            <span className={active ? css.initialActive : css.initial}>
-              {list.name.charAt(0).toUpperCase()}
-            </span>
+            {list.icon ? (
+              <img src={list.icon} alt="" className={css.icon} onError={(e) => { e.target.style.display = 'none'; }} />
+            ) : (
+              <span className={active ? css.initialActive : css.initial}>
+                {list.name.charAt(0).toUpperCase()}
+              </span>
+            )}
           </SpottableItem>
         );
       })}
