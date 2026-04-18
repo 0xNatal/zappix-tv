@@ -14,7 +14,7 @@
  */
 const Channel = (raw) => ({
   id:           raw.stream_id,
-  name:         raw.name,
+  name:         raw.name?.replace(/^[^:]+:\s*/, '') || raw.name,
   icon:         raw.stream_icon || null,
   epgId:        raw.epg_channel_id || null,
   isAdult:      !!raw.is_adult,
