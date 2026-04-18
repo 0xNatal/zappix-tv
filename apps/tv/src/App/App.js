@@ -75,6 +75,7 @@ const AppBase = (props) => {
   const handleListSelect = useCallback((listId) => {
     setActiveListId(listId);
     setListSelectorVisible(false);
+    Spotlight.focus('channelOverlay');
   }, []);
 
   // Move Spotlight focus to overlay when it opens
@@ -206,14 +207,14 @@ const AppBase = (props) => {
         onSelect={handleChannelFocus}
         onVisibleRangeChange={handleVisibleRangeChange}
         visible={overlayVisible}
-      />
-
-      <ListSelector
-        lists={allLists}
-        activeListId={activeListId}
-        onSelect={handleListSelect}
-        visible={listSelectorVisible}
-      />
+      >
+        <ListSelector
+          lists={allLists}
+          activeListId={activeListId}
+          onSelect={handleListSelect}
+          visible={listSelectorVisible}
+        />
+      </ChannelOverlay>
     </div>
   );
 };

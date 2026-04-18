@@ -1,11 +1,11 @@
 import Spottable from '@enact/spotlight/Spottable';
-import SpotlightContainerDecorator from '@enact/spotlight/SpotlightContainerDecorator';
+import SpotlightContainerDecorator, {spotlightDefaultClass} from '@enact/spotlight/SpotlightContainerDecorator';
 import css from './ListSelector.module.less';
 
 const SpottableItem = Spottable('div');
 
 const SelectorContainer = SpotlightContainerDecorator(
-  {enterTo: 'last-focused'},
+  {enterTo: 'default-element'},
   'div'
 );
 
@@ -18,16 +18,18 @@ const ListSelector = ({lists, activeListId, onSelect, visible}) => {
 
   return (
     <SelectorContainer className={visible ? css.panel : css.panelHidden} spotlightId="listSelector">
-      <div className={css.header}>Listen</div>
-      {lists.map(list => (
-        <SpottableItem
-          key={list.id}
-          className={list.id === activeListId ? css.itemActive : css.item}
-          onClick={() => onSelect(list.id)}
-        >
-          {list.name}
-        </SpottableItem>
-      ))}
+      {lists.map(list => {
+        const active = list.id === activeListId;
+        return (
+          <SpottableItem
+            key={list.id}
+            className={`${active ? css.itemActive : css.item} ${active ? spotlightDefaultClass : ''}`}
+            onClick={() => onSelect(list.id)}
+          >
+            {list.name}
+          </SpottableItem>
+        );
+      })}
     </SelectorContainer>
   );
 };
