@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Zappix</title>
+    <script>
+      // SPA redirect for GitHub Pages
+      // Preserves path, query string and hash so index.html can restore them
+      var loc = window.location;
+      window.location.replace(
+        loc.origin + '/zappix/?p=' + encodeURIComponent(loc.pathname + loc.search + loc.hash)
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

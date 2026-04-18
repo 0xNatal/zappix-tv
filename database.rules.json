@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "pairings": {
+      "$code": {
+        ".read": true,
+        ".write": true
+      }
+    },
+    "devices": {
+      "$deviceId": {
+        ".read": true,
+        ".write": true
+      }
+    }
+  }
+}

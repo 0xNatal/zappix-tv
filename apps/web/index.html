@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>Zappix</title>
+  </head>
+  <body class="bg-[#0a0a0a] text-white antialiased">
+    <div id="root"></div>
+    <script>
+      // Restore SPA path from GitHub Pages 404.html redirect
+      (function () {
+        var q = new URLSearchParams(window.location.search);
+        var p = q.get('p');
+        if (p) window.history.replaceState(null, '', p);
+      })();
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,167 @@
+@import "~@enact/sandstone/styles/mixins.less";
+@import "../../styles/tokens.less";
+
+// ─── Overlay Container ─────────────────────────
+.overlay,
+.overlayHidden {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlayHidden {
+  opacity: 0;
+}
+
+.dimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, rgba(0, 0, 0, 0.7));
+}
+
+.panel {
+  position: relative;
+  width: 28%;
+  min-width: 20rem;
+  max-width: 26rem;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(8, 8, 20, 0.95) 0%, rgba(8, 8, 20, 0.98) 100%);
+  backdrop-filter: blur(30px);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlayHidden .panel {
+  transform: translateX(100%);
+}
+
+.list {
+  flex: 1;
+  padding: @space-sm 0;
+}
+
+// ─── Channel Item ───────────────────────────────
+// Height is set by VirtualList itemSize. CSS only handles internal layout.
+// spacing prop adds gaps between items (not part of item height).
+.item,
+.itemActive {
+  display: flex;
+  align-items: center;
+  gap: @space-lg;
+  padding: 0 @space-xl;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  position: relative;
+
+  .focus({
+    background: rgba(255, 255, 255, 0.06);
+    outline: none;
+    .channelName { color: #fff; }
+  });
+}
+
+.itemActive {
+  background: rgba(108, 99, 255, 0.06);
+
+  .channelName {
+    color: @accent;
+  }
+
+  .focus({
+    background: rgba(108, 99, 255, 0.12);
+  });
+}
+
+// ─── Current Indicator ──────────────────────────
+.indicator {
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 3px;
+  background: @accent;
+  border-radius: 0 2px 2px 0;
+}
+
+// ─── Logo ───────────────────────────────────────
+.logo {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: @radius-sm;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.logoImg {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.logoInitial {
+  font-size: @font-size-base;
+  font-weight: @font-weight-semi;
+  color: @text-muted;
+}
+
+// ─── Info ───────────────────────────────────────
+.info {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.channelName {
+  font-size: @font-size-base;
+  font-weight: @font-weight-medium;
+  color: @text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.programTitle {
+  font-size: @font-size-xs;
+  color: @text-muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+// ─── Progress Bar ───────────────────────────────
+.progressBar {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1px;
+  overflow: hidden;
+  margin-top: @space-xs;
+}
+
+.progressFill {
+  height: 100%;
+  background: @accent;
+  border-radius: 1px;
+  transition: width 1s linear;
+}

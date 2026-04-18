@@ -1,0 +1,149 @@
+@import "../../styles/tokens.less";
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background: @bg-primary;
+  position: relative;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: @space-4xl;
+}
+
+// Left side — QR code
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: @space-lg;
+}
+
+.qrCard {
+  background: @accent-bg-subtle;
+  border: 1px solid @accent-border;
+  border-radius: @radius-xl;
+  padding: @space-2xl;
+}
+
+.scanHint {
+  font-size: @font-size-base;
+  color: @text-muted;
+}
+
+// Divider
+.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 12rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      @accent-border 30%,
+      @accent-border 70%,
+      transparent
+    );
+  }
+}
+
+.dividerText {
+  position: relative;
+  background: @bg-primary;
+  padding: @space-sm 0;
+  font-size: @font-size-sm;
+  color: @text-faint;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+// Right side — Steps
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: @space-2xl;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: @space-lg;
+}
+
+.stepNum {
+  width: 2rem;
+  height: 2rem;
+  border-radius: @radius-full;
+  background: @accent-bg-active;
+  color: @accent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: @font-size-base;
+  font-weight: @font-weight-semi;
+  flex-shrink: 0;
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  gap: @space-xs;
+}
+
+.stepLabel {
+  font-size: @font-size-base;
+  color: @text-secondary;
+}
+
+.stepUrl {
+  font-size: @font-size-md;
+  font-weight: @font-weight-medium;
+  color: @accent;
+  letter-spacing: -0.01em;
+}
+
+.codeDisplay {
+  font-size: @font-size-2xl;
+  font-weight: @font-weight-bold;
+  color: @text-primary;
+  letter-spacing: 0.12em;
+  font-family: @font-mono;
+  background: @accent-bg-subtle;
+  border: 1px solid @accent-border-strong;
+  border-radius: @radius-md;
+  padding: @space-md @space-xl;
+  margin-top: @space-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+// Brand
+.brand {
+  position: absolute;
+  bottom: @space-2xl;
+}
+
+.logo {
+  font-size: @font-size-lg;
+  font-weight: @font-weight-semi;
+  color: @text-faint;
+  letter-spacing: -0.02em;
+}

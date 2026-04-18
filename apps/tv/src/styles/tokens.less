@@ -1,0 +1,63 @@
+// ─── Design Tokens ───────────────────────────────────────
+// Zentrale Stelle für alle Farben, Abstände, Radii, Schriften.
+// Import: @import "~../styles/tokens.less"; in jeder .module.less
+
+// ─── Colors ──────────────────────────────────────────────
+@bg-primary:        #0a0a0a;
+@bg-surface:        #1a1a2e;
+@accent:            #6C63FF;
+@accent-dark:       #4834d4;
+@live-red:          #ff4444;
+
+@text-primary:      rgba(255, 255, 255, 0.9);
+@text-secondary:    rgba(255, 255, 255, 0.6);
+@text-muted:        rgba(255, 255, 255, 0.4);
+@text-faint:        rgba(255, 255, 255, 0.3);
+
+@accent-bg-subtle:  rgba(108, 99, 255, 0.08);
+@accent-bg-hover:   rgba(108, 99, 255, 0.12);
+@accent-bg-active:  rgba(108, 99, 255, 0.2);
+@accent-border:     rgba(108, 99, 255, 0.15);
+@accent-border-strong: rgba(108, 99, 255, 0.3);
+
+// ─── Typography ──────────────────────────────────────────
+@font-family:       system-ui, -apple-system, sans-serif;
+@font-mono:         'Courier New', monospace;
+
+@font-size-xs:      0.65rem;
+@font-size-sm:      0.75rem;
+@font-size-base:    0.85rem;
+@font-size-md:      1rem;
+@font-size-lg:      1.2rem;
+@font-size-xl:      1.8rem;
+@font-size-2xl:     2.2rem;
+@font-size-3xl:     3rem;
+
+@font-weight-normal: 400;
+@font-weight-medium: 500;
+@font-weight-semi:   600;
+@font-weight-bold:   700;
+
+// ─── Spacing ─────────────────────────────────────────────
+@space-xs:          0.25rem;
+@space-sm:          0.5rem;
+@space-md:          0.75rem;
+@space-lg:          1rem;
+@space-xl:          1.5rem;
+@space-2xl:         2rem;
+@space-3xl:         3rem;
+@space-4xl:         4rem;
+
+// ─── Border Radius ───────────────────────────────────────
+@radius-sm:         0.5rem;
+@radius-md:         0.75rem;
+@radius-lg:         1rem;
+@radius-xl:         1.5rem;
+@radius-full:       50%;
+
+// ─── Transitions ─────────────────────────────────────────
+@transition-fast:   0.15s ease;
+
+// ─── Focus ───────────────────────────────────────────────
+@focus-ring:        2.5px solid @accent;
+@focus-glow:        0 0 12px @accent-border-strong;

@@ -1,0 +1,13 @@
+{
+  "name": "zappix",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "tv":       "npm run serve --workspace=apps/tv",
+    "build:tv": "npm run pack  --workspace=apps/tv",
+    "web":      "npm run dev   --workspace=apps/web"
+  }
+}

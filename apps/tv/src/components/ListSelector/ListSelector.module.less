@@ -1,0 +1,57 @@
+@import "~@enact/sandstone/styles/mixins.less";
+@import "../../styles/tokens.less";
+
+.panel,
+.panelHidden {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  width: 10rem;
+  background: rgba(10, 10, 20, 0.95);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid @accent-border;
+  display: flex;
+  flex-direction: column;
+  padding: @space-sm;
+  transform: translateX(0);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.panelHidden {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.header {
+  padding: @space-lg @space-md @space-md;
+  font-size: @font-size-sm;
+  font-weight: @font-weight-semi;
+  color: @text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.item,
+.itemActive {
+  padding: @space-md @space-lg;
+  border-radius: @radius-sm;
+  font-size: @font-size-base;
+  color: @text-secondary;
+  cursor: pointer;
+  transition: background @transition-fast;
+
+  .focus({
+    background: @accent-bg-hover;
+    color: @text-primary;
+    outline: none;
+  });
+}
+
+.itemActive {
+  background: @accent-bg-active;
+  color: @text-primary;
+  font-weight: @font-weight-medium;
+}

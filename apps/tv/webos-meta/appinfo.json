@@ -1,0 +1,12 @@
+{
+	"id": "ch.rcklt.zappix",
+	"version": "2.0.2",
+	"vendor": "rcklt",
+	"type": "web",
+	"main": "index.html",
+	"title": "Zappix",
+	"icon": "icon.png",
+	"miniicon": "icon-mini.png",
+	"largeIcon": "icon-large.png",
+	"uiRevision": 2
+}
