@@ -31,9 +31,21 @@
   background: linear-gradient(to right, transparent 60%, rgba(0, 0, 0, 0.7));
 }
 
-.panel {
+.panels {
   position: relative;
-  width: 28%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlayHidden .panels {
+  transform: translateX(100%);
+}
+
+.panel {
+  width: 28vw;
   min-width: 20rem;
   max-width: 26rem;
   height: 100%;
@@ -41,28 +53,23 @@
   backdrop-filter: blur(30px);
   display: flex;
   flex-direction: column;
-  transform: translateX(0);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.overlayHidden .panel {
-  transform: translateX(100%);
 }
 
 .list {
   flex: 1;
-  padding: @space-sm 0;
+  padding: @space-sm;
 }
 
 // ─── Channel Item ───────────────────────────────
 // Height is set by VirtualList itemSize. CSS only handles internal layout.
-// spacing prop adds gaps between items (not part of item height).
 .item,
 .itemActive {
   display: flex;
   align-items: center;
   gap: @space-lg;
-  padding: 0 @space-xl;
+  padding: @space-sm @space-lg;
+  margin: 0 @space-sm;
+  border-radius: @radius-md;
   cursor: pointer;
   transition: background 0.15s ease;
   position: relative;
@@ -94,7 +101,7 @@
   bottom: 20%;
   width: 3px;
   background: @accent;
-  border-radius: 0 2px 2px 0;
+  border-radius: 2px;
 }
 
 // ─── Logo ───────────────────────────────────────

@@ -3,55 +3,67 @@
 
 .panel,
 .panelHidden {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 101;
-  width: 10rem;
-  background: rgba(10, 10, 20, 0.95);
-  backdrop-filter: blur(20px);
-  border-left: 1px solid @accent-border;
+  width: 12rem;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(8, 8, 20, 0.95) 0%, rgba(8, 8, 20, 0.98) 100%);
+  backdrop-filter: blur(30px);
+  border-left: 1px solid rgba(255, 255, 255, 0.03);
   display: flex;
   flex-direction: column;
   padding: @space-sm;
-  transform: translateX(0);
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  overflow: hidden;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease,
+              padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .panelHidden {
-  transform: translateX(100%);
+  width: 0;
   opacity: 0;
+  padding: @space-sm 0;
   pointer-events: none;
-}
-
-.header {
-  padding: @space-lg @space-md @space-md;
-  font-size: @font-size-sm;
-  font-weight: @font-weight-semi;
-  color: @text-muted;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .item,
 .itemActive {
-  padding: @space-md @space-lg;
-  border-radius: @radius-sm;
+  display: flex;
+  align-items: center;
+  padding: 0 @space-lg;
+  height: 3rem;
+  border-radius: @radius-md;
   font-size: @font-size-base;
   color: @text-secondary;
   cursor: pointer;
-  transition: background @transition-fast;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  transition: background @transition-fast, color @transition-fast;
 
   .focus({
-    background: @accent-bg-hover;
-    color: @text-primary;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
     outline: none;
   });
 }
 
 .itemActive {
-  background: @accent-bg-active;
-  color: @text-primary;
+  background: rgba(108, 99, 255, 0.06);
+  color: @accent;
   font-weight: @font-weight-medium;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
+    background: @accent;
+    border-radius: 2px;
+  }
+
+  .focus({
+    background: rgba(108, 99, 255, 0.12);
+  });
 }
