@@ -43,6 +43,14 @@ const MyListTab = ({channelIds, allChannels, onLoadAll, onToggle, lists, activeL
     setEditingId(null);
   };
 
+  const handleIconFile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setEditIcon(reader.result);
+    reader.readAsDataURL(file);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {/* List selector */}
@@ -78,12 +86,21 @@ const MyListTab = ({channelIds, allChannels, onLoadAll, onToggle, lists, activeL
                 className="flex-1 bg-surface border border-accent/20 rounded-lg px-3 py-1.5 text-sm text-white outline-none focus:border-accent transition-colors"
               />
             </div>
-            <input
-              value={editIcon}
-              onChange={(e) => setEditIcon(e.target.value)}
-              placeholder="Icon URL (optional)"
-              className="bg-surface border border-white/5 rounded-lg px-3 py-1.5 text-sm text-white placeholder:text-white/20 outline-none focus:border-accent/40 transition-colors"
-            />
+            <div className="flex gap-2 items-center">
+              <input
+                value={editIcon.startsWith('data:') ? '' : editIcon}
+                onChange={(e) => setEditIcon(e.target.value)}
+                placeholder="Icon URL (optional)"
+                className="flex-1 bg-surface border border-white/5 rounded-lg px-3 py-1.5 text-sm text-white placeholder:text-white/20 outline-none focus:border-accent/40 transition-colors"
+              />
+              <label className="shrink-0 text-accent text-xs font-medium px-2 cursor-pointer">
+                Datei
+                <input type="file" accept="image/svg+xml,image/png,image/jpeg,image/webp" onChange={handleIconFile} className="hidden" />
+              </label>
+              {editIcon && (
+                <img src={editIcon} alt="" className="w-6 h-6 rounded-sm object-contain shrink-0" />
+              )}
+            </div>
             <div className="flex gap-2">
               <button onClick={() => handleSave(editingId)} className="text-accent text-xs font-medium px-2">Speichern</button>
               <button onClick={() => onDeleteList(editingId)} className="text-red-400 text-xs font-medium px-2">Löschen</button>
