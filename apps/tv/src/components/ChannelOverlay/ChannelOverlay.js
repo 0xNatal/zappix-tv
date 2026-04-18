@@ -13,9 +13,8 @@ const OverlayContainer = SpotlightContainerDecorator(
   'div'
 );
 
-// Item height = logo (2.8rem ≈ 67px) + padding (2 × 0.75rem ≈ 38px) = ~105px
-const ITEM_HEIGHT = ri.scale(105);
-const ITEM_SPACING = 0;
+const ITEM_HEIGHT = ri.scale(108);
+const ITEM_SPACING = ri.scale(2);
 
 const ChannelOverlay = ({channels, currentChannelId, getEpg, onSelect, onVisibleRangeChange, visible, children}) => {
   const handleScrollStop = useCallback(({moreInfo}) => {
@@ -36,7 +35,7 @@ const ChannelOverlay = ({channels, currentChannelId, getEpg, onSelect, onVisible
       <SpottableItem
         {...rest}
         className={isCurrent ? css.itemActive : css.item}
-        onFocus={() => onSelect(ch)}
+        onClick={() => onSelect(ch)}
       >
         {isCurrent && <div className={css.indicator} />}
 

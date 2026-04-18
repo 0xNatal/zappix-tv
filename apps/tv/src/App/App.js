@@ -66,10 +66,12 @@ const AppBase = (props) => {
   // Handlers
   const {setLastWatched} = firebaseSync;
 
-  // Focus on channel in overlay → switch immediately, overlay stays open
-  const handleChannelFocus = useCallback((ch) => {
+  // Select channel → switch and close overlay
+  const handleChannelSelect = useCallback((ch) => {
     setActiveChannel(ch);
     setLastWatched(ch.id);
+    setListSelectorVisible(false);
+    setOverlayVisible(false);
   }, [setLastWatched]);
 
   const handleListSelect = useCallback((listId) => {
@@ -92,21 +94,58 @@ const AppBase = (props) => {
     }
   }, [listSelectorVisible]);
 
+  // Auto-hide overlay after inactivity
+  const hideTimerRef = useRef(null);
+
+  const resetHideTimer = useCallback(() => {
+    clearTimeout(hideTimerRef.current);
+    hideTimerRef.current = setTimeout(() => {
+      setListSelectorVisible(false);
+      setOverlayVisible(false);
+    }, 8000);
+  }, []);
+
+  useEffect(() => {
+    if (overlayVisible) {
+      resetHideTimer();
+    } else {
+      clearTimeout(hideTimerRef.current);
+    }
+  }, [overlayVisible, resetHideTimer]);
+
   // Refs for stable key handler — listener registered once, no re-registration
   const stateRef = useRef({});
   useEffect(() => {
-    stateRef.current = {status, currentChannel, overlayVisible, listSelectorVisible, allLists};
+    stateRef.current = {status, currentChannel, overlayVisible, listSelectorVisible, allLists, currentList};
   });
 
   useEffect(() => {
     const handleKeyDown = (ev) => {
-      const {status: s, currentChannel: ch, overlayVisible: ov, listSelectorVisible: lv, allLists: al} = stateRef.current;
+      const {status: s, currentChannel: ch, overlayVisible: ov, listSelectorVisible: lv, allLists: al, currentList: cl} = stateRef.current;
       if (s !== 'ready' || !ch) return;
+
+      // Reset auto-hide on any interaction while overlay is open
+      if (ov) resetHideTimer();
+
+      // Channel up/down on player (overlay closed) — capture phase stops Spotlight
+      if (!ov && (ev.key === 'ArrowUp' || ev.keyCode === 38 || ev.key === 'ArrowDown' || ev.keyCode === 40)) {
+        const idx = cl.findIndex(c => c.id === ch.id);
+        if (idx === -1) return;
+        const next = ev.key === 'ArrowUp' || ev.keyCode === 38
+          ? cl[(idx - 1 + cl.length) % cl.length]
+          : cl[(idx + 1) % cl.length];
+        setActiveChannel(next);
+        setLastWatched(next.id);
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
 
       if (ev.key === 'ArrowRight' || ev.keyCode === 39) {
         if (!ov) {
           setOverlayVisible(true);
           ev.preventDefault();
+          ev.stopPropagation();
         } else if (!lv && al.length > 1) {
           setListSelectorVisible(true);
           ev.preventDefault();
@@ -120,6 +159,7 @@ const AppBase = (props) => {
         } else if (ov) {
           setOverlayVisible(false);
           ev.preventDefault();
+          ev.stopPropagation();
         }
       }
 
@@ -130,13 +170,14 @@ const AppBase = (props) => {
         } else if (ov) {
           setOverlayVisible(false);
           ev.preventDefault();
+          ev.stopPropagation();
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []); // empty deps — registered once, reads latest state from ref
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => document.removeEventListener('keydown', handleKeyDown, true);
+  }, [resetHideTimer, setLastWatched]);
 
   // Loading device / Firebase
   if (deviceLoading || status === 'loading') {
@@ -198,13 +239,13 @@ const AppBase = (props) => {
   // TV-Modus: Player + Overlays
   return (
     <div {...props} className={css.app}>
-      <PlayerView channel={currentChannel} />
+      <PlayerView channel={currentChannel} epg={currentChannel ? getEpg(currentChannel.id) : null} />
 
       <ChannelOverlay
         channels={currentList}
         currentChannelId={currentChannel?.id}
         getEpg={getEpg}
-        onSelect={handleChannelFocus}
+        onSelect={handleChannelSelect}
         onVisibleRangeChange={handleVisibleRangeChange}
         visible={overlayVisible}
       >

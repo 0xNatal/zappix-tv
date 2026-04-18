@@ -2,20 +2,14 @@ import {useRef, useEffect} from 'react';
 import {getStreamUrl} from '../../api/xtream';
 import css from './PlayerView.module.less';
 
-/**
- * Fullscreen video player using plain <video> element.
- * No Enact VideoPlayer — avoids Spotlight conflicts and unwanted UI.
- */
-const PlayerView = ({channel}) => {
+const PlayerView = ({channel, epg}) => {
   const videoRef = useRef(null);
 
-  // Auto-play when channel changes
   useEffect(() => {
     if (!channel || !videoRef.current) return;
-
     const video = videoRef.current;
     video.src = getStreamUrl(channel.id);
-    video.play().catch(() => {});  // autoplay might be blocked in browser, OK on TV
+    video.play().catch(() => {});
   }, [channel]);
 
   if (!channel) return null;
@@ -28,6 +22,17 @@ const PlayerView = ({channel}) => {
         autoPlay
         playsInline
       />
+      <div key={channel.id} className={css.badge}>
+        <div className={css.badgeContent}>
+          {channel.icon && (
+            <img src={channel.icon} alt="" className={css.badgeLogo} onError={(e) => { e.target.style.display = 'none'; }} />
+          )}
+          <div className={css.badgeInfo}>
+            <div className={css.badgeName}>{channel.name}</div>
+            {epg && <div className={css.badgeProgram}>{epg.title}</div>}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
