@@ -2,7 +2,7 @@ import {QRCodeSVG} from 'qrcode.react';
 import {buildPairingUrl} from '@zappix/shared';
 import css from './PairingScreen.module.less';
 
-const WEB_APP_BASE = 'https://nbumann97.github.io/zappix';
+const WEB_APP_BASE = 'https://0xnatal.github.io/zappix-tv';
 
 const PairingScreen = ({pairingCode}) => {
   const url = buildPairingUrl(WEB_APP_BASE, pairingCode);
