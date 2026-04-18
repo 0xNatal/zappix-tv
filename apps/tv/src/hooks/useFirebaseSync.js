@@ -13,7 +13,8 @@ import {initXtreamClient} from '../api/xtream';
  *
  * @param {string} deviceId - MAC-based device ID
  * @param {string} pairingCode - Random pairing code for this device
- * @returns {{ status, credentials, channelLists, lastWatchedChannelId, setLastWatched }}
+ * @param {string|null} mac - Raw MAC address (e.g. "AA:BB:CC:DD:EE:FF"), null on non-TV
+ * @returns {{ status, channelLists, lastWatchedChannelId, setLastWatched }}
  *   status: 'loading' | 'pairing' | 'ready' | 'error'
  */
 const useFirebaseSync = (deviceId, pairingCode, mac) => {
