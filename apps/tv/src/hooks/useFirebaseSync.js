@@ -16,7 +16,7 @@ import {initXtreamClient} from '../api/xtream';
  * @returns {{ status, credentials, channelLists, lastWatchedChannelId, setLastWatched }}
  *   status: 'loading' | 'pairing' | 'ready' | 'error'
  */
-const useFirebaseSync = (deviceId, pairingCode) => {
+const useFirebaseSync = (deviceId, pairingCode, mac) => {
   const [status, setStatus] = useState('loading');
   const [channelLists, setChannelLists] = useState({});
   const [lastWatchedChannelId, setLastWatchedChannelId] = useState(null);
@@ -37,6 +37,7 @@ const useFirebaseSync = (deviceId, pairingCode) => {
             pairingCode,
             paired: false,
             createdAt: Date.now(),
+            ...(mac && {mac}),
           });
         } else if (!existing.credentials && existing.pairingCode !== pairingCode) {
           // Device exists but unpaired with a different code — clean up old index

@@ -26,6 +26,7 @@ const useDevice = () => {
   // Non-TV: resolve immediately from localStorage (no async needed)
   const initialId = !isTV ? ensureFallbackId() : getStoredDeviceId();
   const [deviceId, setDeviceId] = useState(initialId);
+  const [mac, setMac] = useState(null);
   const [pairingCode] = useState(ensurePairingCode);
   const loading = !deviceId;
 
@@ -38,11 +39,12 @@ const useDevice = () => {
       method: 'getStatus',
       parameters: {},
       onSuccess: (res) => {
-        const mac = res?.wired?.macAddress || res?.wifi?.macAddress;
-        if (mac) {
-          const id = macToDeviceId(mac);
+        const rawMac = res?.wired?.macAddress || res?.wifi?.macAddress;
+        if (rawMac) {
+          const id = macToDeviceId(rawMac);
           localStorage.setItem('zappix_device_id', id);
           setDeviceId(id);
+          setMac(rawMac);
         } else {
           const id = ensureFallbackId();
           setDeviceId(id);
@@ -55,7 +57,7 @@ const useDevice = () => {
     });
   }, [isTV, deviceId]);
 
-  return {deviceId, pairingCode, loading};
+  return {deviceId, mac, pairingCode, loading};
 };
 
 function ensureFallbackId () {

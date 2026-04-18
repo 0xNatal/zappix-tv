@@ -15,8 +15,8 @@ import './attachErrorHandler';
 import css from './App.module.less';
 
 const AppBase = (props) => {
-  const {deviceId, pairingCode, loading: deviceLoading} = useDevice();
-  const firebaseSync = useFirebaseSync(deviceId, pairingCode);
+  const {deviceId, mac, pairingCode, loading: deviceLoading} = useDevice();
+  const firebaseSync = useFirebaseSync(deviceId, pairingCode, mac);
   const {status, channelLists, lastWatchedChannelId} = firebaseSync;
 
   // Channel data
