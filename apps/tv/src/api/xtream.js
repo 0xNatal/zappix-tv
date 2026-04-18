@@ -15,7 +15,6 @@ export const getClient = () => {
   return client;
 };
 
-export const getLiveCategories = (...args) => getClient().getLiveCategories(...args);
 export const getLiveStreams = (...args) => getClient().getLiveStreams(...args);
 export const getShortEpg = (...args) => getClient().getShortEpg(...args);
 export const getStreamUrl = (...args) => getClient().getStreamUrl(...args);
