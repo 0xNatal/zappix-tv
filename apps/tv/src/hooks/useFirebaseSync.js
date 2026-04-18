@@ -35,7 +35,6 @@ const useFirebaseSync = (deviceId, pairingCode, mac) => {
         if (!existing) {
           await setDevice(deviceId, {
             pairingCode,
-            paired: false,
             createdAt: Date.now(),
             ...(mac && {mac}),
           });

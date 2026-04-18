@@ -23,7 +23,7 @@ const CredentialsScreen = ({deviceId, onSaved}) => {
     try {
       const client = createXtreamClient(creds);
       await client.getAccountInfo();
-      await updateDevice(deviceId, {credentials: creds, paired: true});
+      await updateDevice(deviceId, {credentials: creds});
       sessionStorage.setItem('zappix_credentials', JSON.stringify(creds));
       onSaved(creds);
     } catch (err) {
