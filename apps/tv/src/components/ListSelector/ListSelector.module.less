@@ -5,22 +5,22 @@
 .panelHidden {
   width: 12rem;
   height: 100%;
-  background: linear-gradient(180deg, rgba(8, 8, 20, 0.95) 0%, rgba(8, 8, 20, 0.98) 100%);
-  backdrop-filter: blur(30px);
-  border-left: 1px solid rgba(255, 255, 255, 0.03);
+  background: linear-gradient(180deg, rgba(8, 8, 20, 0.92) 0%, rgba(8, 8, 20, 0.97) 100%);
+  backdrop-filter: blur(40px);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   flex-direction: column;
-  padding: @space-sm;
+  padding: @space-md @space-sm;
   overflow: hidden;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.2s ease,
-              padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+              padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .panelHidden {
   width: 0;
   opacity: 0;
-  padding: @space-sm 0;
+  padding: @space-md 0;
   pointer-events: none;
 }
 
@@ -29,6 +29,7 @@
   display: flex;
   align-items: center;
   padding: 0 @space-lg;
+  margin: 0 @space-xs;
   height: 3rem;
   border-radius: @radius-md;
   font-size: @font-size-base;
@@ -38,17 +39,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   position: relative;
-  transition: background @transition-fast, color @transition-fast;
+  transition: background 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s ease;
 
   .focus({
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.03);
     color: #fff;
     outline: none;
   });
 }
 
 .itemActive {
-  background: rgba(108, 99, 255, 0.06);
+  background: rgba(108, 99, 255, 0.08);
   color: @accent;
   font-weight: @font-weight-medium;
 
@@ -56,14 +58,15 @@
     content: '';
     position: absolute;
     left: 0;
-    top: 20%;
-    bottom: 20%;
+    top: 25%;
+    bottom: 25%;
     width: 3px;
     background: @accent;
     border-radius: 2px;
   }
 
   .focus({
-    background: rgba(108, 99, 255, 0.12);
+    background: rgba(108, 99, 255, 0.15);
+    transform: scale(1.03);
   });
 }
