@@ -3,24 +3,24 @@
 
 .panel,
 .panelHidden {
-  width: 12rem;
+  width: 4.5rem;
   height: 100%;
-  background: linear-gradient(180deg, rgba(8, 8, 20, 0.92) 0%, rgba(8, 8, 20, 0.97) 100%);
+  background: linear-gradient(to right, rgba(8, 8, 20, 0.7), rgba(8, 8, 20, 0.9));
   backdrop-filter: blur(40px);
   border-left: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   flex-direction: column;
-  padding: @space-md @space-sm;
+  align-items: center;
+  padding: @space-lg 0;
+  gap: @space-sm;
   overflow: hidden;
   transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.2s ease,
-              padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+              opacity 0.2s ease;
 }
 
 .panelHidden {
   width: 0;
   opacity: 0;
-  padding: @space-md 0;
   pointer-events: none;
 }
 
@@ -28,45 +28,45 @@
 .itemActive {
   display: flex;
   align-items: center;
-  padding: 0 @space-lg;
-  margin: 0 @space-xs;
+  justify-content: center;
+  width: 3rem;
   height: 3rem;
   border-radius: @radius-md;
-  font-size: @font-size-base;
-  color: @text-secondary;
   cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   position: relative;
-  transition: background 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s ease;
+  transition: background 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
   .focus({
     background: rgba(255, 255, 255, 0.08);
-    transform: scale(1.03);
-    color: #fff;
+    transform: scale(1.1);
     outline: none;
+    .initial { color: #fff; background: rgba(255, 255, 255, 0.1); }
   });
 }
 
 .itemActive {
-  background: rgba(108, 99, 255, 0.08);
-  color: @accent;
-  font-weight: @font-weight-medium;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 25%;
-    bottom: 25%;
-    width: 3px;
-    background: @accent;
-    border-radius: 2px;
-  }
-
   .focus({
     background: rgba(108, 99, 255, 0.15);
-    transform: scale(1.03);
+    transform: scale(1.1);
   });
+}
+
+.initial,
+.initialActive {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: @radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: @font-size-sm;
+  font-weight: @font-weight-semi;
+  color: @text-muted;
+  background: rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease, color 0.15s ease;
+}
+
+.initialActive {
+  color: @accent;
+  background: @accent-bg-hover;
 }

@@ -9,10 +9,6 @@ const SelectorContainer = SpotlightContainerDecorator(
   'div'
 );
 
-/**
- * Stufe 2: List selector — appears to the right of the ChannelOverlay.
- * Allows switching between channel lists (Meine Sender, Sport, Kids, etc.)
- */
 const ListSelector = ({lists, activeListId, onSelect, visible}) => {
   if (!lists || !lists.length) return null;
 
@@ -25,8 +21,11 @@ const ListSelector = ({lists, activeListId, onSelect, visible}) => {
             key={list.id}
             className={`${active ? css.itemActive : css.item} ${active ? spotlightDefaultClass : ''}`}
             onClick={() => onSelect(list.id)}
+            title={list.name}
           >
-            {list.name}
+            <span className={active ? css.initialActive : css.initial}>
+              {list.name.charAt(0).toUpperCase()}
+            </span>
           </SpottableItem>
         );
       })}
