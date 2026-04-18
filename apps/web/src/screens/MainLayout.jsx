@@ -15,7 +15,8 @@ const MainLayout = ({deviceId, credentials}) => {
   const [search, setSearch] = useState('');
   const [categories, setCategories] = useState([]);
   const [allChannels, setAllChannels] = useState([]);
-  const [myChannelIds, setMyChannelIds] = useState([]);
+  const [channelLists, setChannelLists] = useState({});
+  const [activeListId, setActiveListId] = useState('default');
   const [loading, setLoading] = useState(true);
   const [allChannelsLoaded, setAllChannelsLoaded] = useState(false);
 
@@ -43,21 +44,57 @@ const MainLayout = ({deviceId, credentials}) => {
 
   useEffect(() => {
     getDevice(deviceId).then(data => {
-      const list = data?.channelLists?.default?.channelIds;
-      if (Array.isArray(list)) setMyChannelIds(list);
+      const lists = data?.channelLists;
+      if (lists && Object.keys(lists).length > 0) {
+        setChannelLists(lists);
+      } else {
+        const initial = {default: {name: 'Meine Sender', channelIds: [], updatedAt: Date.now()}};
+        setChannelLists(initial);
+        updateDevice(deviceId, {channelLists: initial});
+      }
     });
   }, [deviceId]);
 
+  const myChannelIds = channelLists[activeListId]?.channelIds || [];
+
   const toggleChannel = useCallback((channelId) => {
-    setMyChannelIds(prev => {
-      const next = prev.includes(channelId)
-        ? prev.filter(id => id !== channelId)
-        : [...prev, channelId];
-      updateDevice(deviceId, {
-        'channelLists/default': {name: 'Meine Sender', channelIds: next, updatedAt: Date.now()}
-      });
+    setChannelLists(prev => {
+      const list = prev[activeListId] || {name: 'Meine Sender', channelIds: []};
+      const ids = list.channelIds || [];
+      const nextIds = ids.includes(channelId)
+        ? ids.filter(id => id !== channelId)
+        : [...ids, channelId];
+      const nextList = {...list, channelIds: nextIds, updatedAt: Date.now()};
+      updateDevice(deviceId, {[`channelLists/${activeListId}`]: nextList});
+      return {...prev, [activeListId]: nextList};
+    });
+  }, [deviceId, activeListId]);
+
+  const createList = useCallback((name) => {
+    const id = Date.now().toString(36);
+    const list = {name, channelIds: [], updatedAt: Date.now()};
+    updateDevice(deviceId, {[`channelLists/${id}`]: list});
+    setChannelLists(prev => ({...prev, [id]: list}));
+    setActiveListId(id);
+  }, [deviceId]);
+
+  const deleteList = useCallback((listId) => {
+    if (listId === 'default') return;
+    updateDevice(deviceId, {[`channelLists/${listId}`]: null});
+    setChannelLists(prev => {
+      const next = {...prev};
+      delete next[listId];
       return next;
     });
+    if (activeListId === listId) setActiveListId('default');
+  }, [deviceId, activeListId]);
+
+  const renameList = useCallback((listId, name) => {
+    updateDevice(deviceId, {[`channelLists/${listId}/name`]: name});
+    setChannelLists(prev => ({
+      ...prev,
+      [listId]: {...prev[listId], name},
+    }));
   }, [deviceId]);
 
   const searchResults = useMemo(() => {
@@ -107,7 +144,18 @@ const MainLayout = ({deviceId, credentials}) => {
         ) : tab === 'browse' ? (
           <BrowseTab parsed={parsed} client={client} myChannelIds={myChannelIds} onToggle={toggleChannel} />
         ) : tab === 'mylist' ? (
-          <MyListTab channelIds={myChannelIds} allChannels={allChannels} onLoadAll={loadAllChannels} onToggle={toggleChannel} />
+          <MyListTab
+            channelIds={myChannelIds}
+            allChannels={allChannels}
+            onLoadAll={loadAllChannels}
+            onToggle={toggleChannel}
+            lists={channelLists}
+            activeListId={activeListId}
+            onSelectList={setActiveListId}
+            onCreateList={createList}
+            onDeleteList={deleteList}
+            onRenameList={renameList}
+          />
         ) : (
           <SettingsTab credentials={credentials} deviceId={deviceId} />
         )}
