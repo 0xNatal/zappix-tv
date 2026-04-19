@@ -23,7 +23,7 @@ const PairingScreen = ({onPaired}) => {
         const data = await getDevice(trimmed);
         if (data) {
           localStorage.setItem('zappix_device_id', trimmed);
-          onPaired(trimmed);
+          onPaired(trimmed, data.credentials || null);
         } else {
           setError('Gerät nicht gefunden.');
         }

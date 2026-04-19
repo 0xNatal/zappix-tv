@@ -26,7 +26,16 @@ const App = () => {
   if (screen === 'pairing') {
     return (
       <div className="min-h-dvh bg-bg text-white flex items-center justify-center p-4">
-        <PairingScreen onPaired={(id) => { setDeviceId(id); setScreen('credentials'); }} />
+        <PairingScreen onPaired={(id, creds) => {
+          setDeviceId(id);
+          if (creds) {
+            localStorage.setItem('zappix_credentials', JSON.stringify(creds));
+            setCredentials(creds);
+            setScreen('main');
+          } else {
+            setScreen('credentials');
+          }
+        }} />
       </div>
     );
   }
