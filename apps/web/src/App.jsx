@@ -16,6 +16,13 @@ const App = () => {
     return stored ? JSON.parse(stored) : null;
   });
 
+  const handleSwitchDevice = (newDeviceId, newCredentials) => {
+    sessionStorage.setItem('zappix_device_id', newDeviceId);
+    sessionStorage.setItem('zappix_credentials', JSON.stringify(newCredentials));
+    setDeviceId(newDeviceId);
+    setCredentials(newCredentials);
+  };
+
   if (screen === 'pairing') {
     return (
       <div className="min-h-dvh bg-bg text-white flex items-center justify-center p-4">
@@ -32,7 +39,7 @@ const App = () => {
     );
   }
 
-  return <MainLayout deviceId={deviceId} credentials={credentials} />;
+  return <MainLayout deviceId={deviceId} credentials={credentials} onSwitchDevice={handleSwitchDevice} />;
 };
 
 export default App;

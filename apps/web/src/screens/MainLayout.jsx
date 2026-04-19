@@ -10,7 +10,7 @@ const TABS = [
   {id: 'settings', label: 'Einstellungen'},
 ];
 
-const MainLayout = ({deviceId, credentials}) => {
+const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
   const [tab, setTab] = useState('browse');
   const [search, setSearch] = useState('');
   const [categories, setCategories] = useState([]);
@@ -166,7 +166,7 @@ const MainLayout = ({deviceId, credentials}) => {
             onSetListIcon={setListIcon}
           />
         ) : (
-          <SettingsTab credentials={credentials} deviceId={deviceId} />
+          <SettingsTab credentials={credentials} deviceId={deviceId} onSwitchDevice={onSwitchDevice} />
         )}
       </main>
 
