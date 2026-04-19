@@ -50,7 +50,10 @@ const PlayerView = ({channel, epg}) => {
       </div>
       {error && (
         <div className={css.error}>
-          <div className={css.errorContent}>{error}</div>
+          <div className={css.errorContent}>
+            <div className={css.errorDot} />
+            <span className={css.errorText}>{error}</span>
+          </div>
         </div>
       )}
     </div>

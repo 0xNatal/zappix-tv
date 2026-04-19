@@ -64,22 +64,41 @@
 // ─── Stream Error ───────────────────────────────
 .error {
   position: absolute;
-  bottom: @space-2xl;
-  left: 50%;
-  transform: translateX(-50%);
+  top: @space-2xl;
+  left: @space-2xl;
   pointer-events: none;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.4s ease;
 }
 
 .errorContent {
-  background: rgba(255, 68, 68, 0.15);
+  display: flex;
+  align-items: center;
+  gap: @space-md;
+  background: rgba(8, 8, 20, 0.75);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 68, 68, 0.3);
+  border: 1px solid rgba(255, 68, 68, 0.2);
   border-radius: @radius-md;
-  padding: @space-md @space-xl;
+  padding: @space-md @space-lg;
+}
+
+.errorDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: @live-red;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.errorText {
   font-size: @font-size-sm;
-  color: @live-red;
   font-weight: @font-weight-medium;
+  color: @text-secondary;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 @keyframes fadeIn {
