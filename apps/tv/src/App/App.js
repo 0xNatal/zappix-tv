@@ -205,9 +205,10 @@ const AppBase = (props) => {
   if (status === 'error') {
     return (
       <div {...props} className={css.app}>
-        <div className={css.center}>
-          <div className={css.statusText}>Verbindungsfehler</div>
-          <div className={css.statusHint}>Bitte App neu starten</div>
+        <div className={css.empty}>
+          <div className={css.emptyIcon}>!</div>
+          <div className={css.emptyTitle}>Verbindungsfehler</div>
+          <div className={css.emptyHint}>Bitte App neu starten</div>
         </div>
       </div>
     );
@@ -229,9 +230,10 @@ const AppBase = (props) => {
   if (currentList.length === 0) {
     return (
       <div {...props} className={css.app}>
-        <div className={css.center}>
-          <div className={css.statusText}>Keine Sender vorhanden</div>
-          <div className={css.statusHint}>Sender über die Web-App hinzufügen</div>
+        <div className={css.empty}>
+          <div className={css.emptyIcon}>0</div>
+          <div className={css.emptyTitle}>Keine Sender</div>
+          <div className={css.emptyHint}>Füge Sender über die Web-App hinzu</div>
         </div>
       </div>
     );

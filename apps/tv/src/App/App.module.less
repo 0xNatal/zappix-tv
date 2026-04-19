@@ -61,26 +61,42 @@
   }
 }
 
-// ─── Loading / Empty States ────────────────────
-.center {
+// ─── Empty / Error States ─────────────────────
+.empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: @space-lg;
   height: 100%;
-  animation: fadeIn 0.4s ease;
+  animation: fadeIn 0.6s ease;
 }
 
-.statusText {
+.emptyIcon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: @radius-lg;
+  background: @accent-bg-subtle;
+  border: 1px solid @accent-border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: @font-size-xl;
+  font-weight: @font-weight-bold;
+  color: @accent;
+  margin-bottom: @space-sm;
+}
+
+.emptyTitle {
+  font-size: @font-size-lg;
+  font-weight: @font-weight-semi;
+  color: @text-primary;
+  letter-spacing: -0.02em;
+}
+
+.emptyHint {
   font-size: @font-size-base;
   color: @text-muted;
-  letter-spacing: 0.02em;
-}
-
-.statusHint {
-  font-size: @font-size-sm;
-  color: @text-faint;
 }
 
 // ─── Animations ────────────────────────────────
