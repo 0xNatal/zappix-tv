@@ -43,7 +43,7 @@ const SettingsTab = ({credentials, deviceId, onSwitchDevice}) => {
     e.preventDefault();
     const id = addId.trim();
     if (!id) return;
-    if (id === deviceId) { setAddError('Das ist dein eigenes Gerät.'); return; }
+    if (id === deviceId || id === ownDeviceId) { setAddError('Das ist dein eigenes Gerät.'); return; }
     if (managedDevices.some(d => d.deviceId === id)) { setAddError('Gerät bereits vorhanden.'); return; }
 
     setAdding(true);
@@ -70,7 +70,7 @@ const SettingsTab = ({credentials, deviceId, onSwitchDevice}) => {
 
   const switchTo = async (id) => {
     const data = await getDevice(id);
-    if (!data?.credentials) return;
+    if (!data?.credentials) { setAddError('Gerät hat keine Zugangsdaten.'); return; }
     onSwitchDevice(id, data.credentials);
   };
 
@@ -99,16 +99,20 @@ const SettingsTab = ({credentials, deviceId, onSwitchDevice}) => {
             <span className="text-sm text-white/50">Device ID</span>
             <span className="text-xs text-white/40 font-mono">{deviceId}</span>
           </div>
-          <div className="h-px bg-white/5" />
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-white/50">Fernzugriff</span>
-            <button
-              onClick={toggleRemoteAccess}
-              className={`w-10 h-5 rounded-full transition-colors relative ${remoteAccess ? 'bg-accent' : 'bg-white/10'}`}
-            >
-              <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${remoteAccess ? 'left-5' : 'left-0.5'}`} />
-            </button>
-          </div>
+          {isOnOwnDevice && (
+            <>
+              <div className="h-px bg-white/5" />
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/50">Fernzugriff</span>
+                <button
+                  onClick={toggleRemoteAccess}
+                  className={`w-10 h-5 rounded-full transition-colors relative ${remoteAccess ? 'bg-accent' : 'bg-white/10'}`}
+                >
+                  <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${remoteAccess ? 'left-5' : 'left-0.5'}`} />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
