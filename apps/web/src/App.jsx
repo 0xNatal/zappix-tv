@@ -6,19 +6,19 @@ import './App.css';
 
 const App = () => {
   const [screen, setScreen] = useState(() => {
-    if (sessionStorage.getItem('zappix_credentials')) return 'main';
-    if (sessionStorage.getItem('zappix_device_id')) return 'credentials';
+    if (localStorage.getItem('zappix_credentials')) return 'main';
+    if (localStorage.getItem('zappix_device_id')) return 'credentials';
     return 'pairing';
   });
-  const [deviceId, setDeviceId] = useState(() => sessionStorage.getItem('zappix_device_id'));
+  const [deviceId, setDeviceId] = useState(() => localStorage.getItem('zappix_device_id'));
   const [credentials, setCredentials] = useState(() => {
-    const stored = sessionStorage.getItem('zappix_credentials');
+    const stored = localStorage.getItem('zappix_credentials');
     return stored ? JSON.parse(stored) : null;
   });
 
   const handleSwitchDevice = (newDeviceId, newCredentials) => {
-    sessionStorage.setItem('zappix_device_id', newDeviceId);
-    sessionStorage.setItem('zappix_credentials', JSON.stringify(newCredentials));
+    localStorage.setItem('zappix_device_id', newDeviceId);
+    localStorage.setItem('zappix_credentials', JSON.stringify(newCredentials));
     setDeviceId(newDeviceId);
     setCredentials(newCredentials);
   };

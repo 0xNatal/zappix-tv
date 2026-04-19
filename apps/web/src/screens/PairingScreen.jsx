@@ -20,7 +20,7 @@ const PairingScreen = ({onPaired}) => {
     try {
       const result = await findDeviceByPairingCode(trimmed);
       if (result) {
-        sessionStorage.setItem('zappix_device_id', result.deviceId);
+        localStorage.setItem('zappix_device_id', result.deviceId);
         onPaired(result.deviceId);
       } else {
         setError('Code nicht gefunden. Bitte prüfe den Code auf deinem TV.');

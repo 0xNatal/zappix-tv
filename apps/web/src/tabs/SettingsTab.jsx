@@ -75,7 +75,10 @@ const SettingsTab = ({credentials, deviceId, onSwitchDevice}) => {
   };
 
   const handleReset = () => {
-    sessionStorage.clear();
+    localStorage.removeItem('zappix_device_id');
+    localStorage.removeItem('zappix_credentials');
+    localStorage.removeItem('zappix_own_device_id');
+    localStorage.removeItem('zappix_managed_devices');
     window.location.reload();
   };
 
