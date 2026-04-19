@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo, useCallback} from 'react';
+import {useState, useEffect, useMemo, useCallback, useRef} from 'react';
 import {createXtreamClient, parseCategories, updateDevice, getDevice} from '@zappix/shared';
 import BrowseTab from '../tabs/BrowseTab';
 import MyListTab from '../tabs/MyListTab';
@@ -19,6 +19,18 @@ const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
   const [activeListId, setActiveListId] = useState('default');
   const [loading, setLoading] = useState(true);
   const [allChannelsLoaded, setAllChannelsLoaded] = useState(false);
+  const [toast, setToast] = useState(null);
+  const toastTimer = useRef(null);
+
+  const showError = useCallback((msg) => {
+    setToast(msg);
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 4000);
+  }, []);
+
+  const safeUpdate = useCallback((data) =>
+    updateDevice(deviceId, data).catch(() => showError('Änderung konnte nicht gespeichert werden')),
+  [deviceId, showError]);
 
   const client = useMemo(() => createXtreamClient(credentials), [credentials]);
   const parsed = useMemo(() => parseCategories(categories), [categories]);
@@ -26,17 +38,17 @@ const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
   useEffect(() => {
     client.getLiveCategories()
       .then(setCategories)
-      .catch(console.error)
+      .catch(() => showError('Kategorien konnten nicht geladen werden'))
       .finally(() => setLoading(false));
-  }, [client]);
+  }, [client, showError]);
 
   // Load all channels lazily (for search + meine liste)
   const loadAllChannels = useCallback(() => {
     if (allChannelsLoaded) return;
     client.getLiveStreams()
       .then(chs => { setAllChannels(chs); setAllChannelsLoaded(true); })
-      .catch(console.error);
-  }, [client, allChannelsLoaded]);
+      .catch(() => showError('Sender konnten nicht geladen werden'));
+  }, [client, allChannelsLoaded, showError]);
 
   useEffect(() => {
     if (search.trim().length >= 2) loadAllChannels();
@@ -50,7 +62,7 @@ const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
       } else {
         const initial = {default: {name: 'Meine Sender', channelIds: [], updatedAt: Date.now()}};
         setChannelLists(initial);
-        updateDevice(deviceId, {channelLists: initial});
+        safeUpdate({channelLists: initial});
       }
     });
   }, [deviceId]);
@@ -65,45 +77,45 @@ const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
         ? ids.filter(id => id !== channelId)
         : [...ids, channelId];
       const nextList = {...list, channelIds: nextIds, updatedAt: Date.now()};
-      updateDevice(deviceId, {[`channelLists/${activeListId}`]: nextList});
+      safeUpdate({[`channelLists/${activeListId}`]: nextList});
       return {...prev, [activeListId]: nextList};
     });
-  }, [deviceId, activeListId]);
+  }, [activeListId, safeUpdate]);
 
   const createList = useCallback((name, icon) => {
     const id = Date.now().toString(36);
     const list = {name, channelIds: [], updatedAt: Date.now(), ...(icon && {icon})};
-    updateDevice(deviceId, {[`channelLists/${id}`]: list});
+    safeUpdate({[`channelLists/${id}`]: list});
     setChannelLists(prev => ({...prev, [id]: list}));
     setActiveListId(id);
-  }, [deviceId]);
+  }, [safeUpdate]);
 
   const deleteList = useCallback((listId) => {
     if (listId === 'default') return;
-    updateDevice(deviceId, {[`channelLists/${listId}`]: null});
+    safeUpdate({[`channelLists/${listId}`]: null});
     setChannelLists(prev => {
       const next = {...prev};
       delete next[listId];
       return next;
     });
     if (activeListId === listId) setActiveListId('default');
-  }, [deviceId, activeListId]);
+  }, [activeListId, safeUpdate]);
 
   const renameList = useCallback((listId, name) => {
-    updateDevice(deviceId, {[`channelLists/${listId}/name`]: name});
+    safeUpdate({[`channelLists/${listId}/name`]: name});
     setChannelLists(prev => ({
       ...prev,
       [listId]: {...prev[listId], name},
     }));
-  }, [deviceId]);
+  }, [safeUpdate]);
 
   const setListIcon = useCallback((listId, icon) => {
-    updateDevice(deviceId, {[`channelLists/${listId}/icon`]: icon || null});
+    safeUpdate({[`channelLists/${listId}/icon`]: icon || null});
     setChannelLists(prev => ({
       ...prev,
       [listId]: {...prev[listId], icon: icon || null},
     }));
-  }, [deviceId]);
+  }, [safeUpdate]);
 
   const searchResults = useMemo(() => {
     if (!search.trim() || search.length < 2) return null;
@@ -183,6 +195,12 @@ const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
           </button>
         ))}
       </nav>
+
+      {toast && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500/15 backdrop-blur-xl border border-red-500/30 rounded-xl px-4 py-2.5 text-red-400 text-sm font-medium animate-[fadeIn_0.3s_ease]">
+          {toast}
+        </div>
+      )}
     </div>
   );
 };

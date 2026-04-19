@@ -1,15 +1,33 @@
-import {useRef, useEffect} from 'react';
+import {useRef, useEffect, useState} from 'react';
 import {getStreamUrl} from '../../api/xtream';
 import css from './PlayerView.module.less';
 
 const PlayerView = ({channel, epg}) => {
   const videoRef = useRef(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!channel || !videoRef.current) return;
     const video = videoRef.current;
     video.src = getStreamUrl(channel.id);
     video.play().catch(() => {});
+
+    const onError = () => setError('Stream nicht verfügbar');
+    const onStalled = () => setError('Stream lädt nicht');
+    const onPlaying = () => setError(null);
+    const onLoadStart = () => setError(null);
+
+    video.addEventListener('error', onError);
+    video.addEventListener('stalled', onStalled);
+    video.addEventListener('playing', onPlaying);
+    video.addEventListener('loadstart', onLoadStart);
+
+    return () => {
+      video.removeEventListener('error', onError);
+      video.removeEventListener('stalled', onStalled);
+      video.removeEventListener('playing', onPlaying);
+      video.removeEventListener('loadstart', onLoadStart);
+    };
   }, [channel]);
 
   if (!channel) return null;
@@ -33,6 +51,11 @@ const PlayerView = ({channel, epg}) => {
           </div>
         </div>
       </div>
+      {error && (
+        <div className={css.error}>
+          <div className={css.errorContent}>{error}</div>
+        </div>
+      )}
     </div>
   );
 };

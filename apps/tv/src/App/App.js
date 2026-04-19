@@ -20,7 +20,7 @@ const AppBase = (props) => {
   const {status, channelLists, lastWatchedChannelId} = firebaseSync;
 
   // Channel data
-  const {resolveList, loading: channelsLoading} = useChannelMap(status === 'ready');
+  const {resolveList, loading: channelsLoading, error: channelsError} = useChannelMap(status === 'ready');
 
   // Active channel + overlay state
   const [activeChannel, setActiveChannel] = useState(null);
@@ -221,6 +221,19 @@ const AppBase = (props) => {
         <div className={css.splash}>
           <div className={css.logo}>Zappix</div>
           <div className={css.loader} />
+        </div>
+      </div>
+    );
+  }
+
+  // Channel loading error
+  if (channelsError) {
+    return (
+      <div {...props} className={css.app}>
+        <div className={css.empty}>
+          <div className={css.emptyIcon}>!</div>
+          <div className={css.emptyTitle}>Sender konnten nicht geladen werden</div>
+          <div className={css.emptyHint}>{channelsError}</div>
         </div>
       </div>
     );

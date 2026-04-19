@@ -61,6 +61,32 @@
   line-height: 1.3;
 }
 
+// ─── Stream Error ───────────────────────────────
+.error {
+  position: absolute;
+  bottom: @space-2xl;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.errorContent {
+  background: rgba(255, 68, 68, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-radius: @radius-md;
+  padding: @space-md @space-xl;
+  font-size: @font-size-sm;
+  color: @live-red;
+  font-weight: @font-weight-medium;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes badgeShow {
   0% { opacity: 0; transform: translateY(-0.5rem); }
   8% { opacity: 1; transform: translateY(0); }
