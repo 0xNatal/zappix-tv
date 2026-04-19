@@ -13,18 +13,15 @@ const PlayerView = ({channel, epg}) => {
     video.play().catch(() => {});
 
     const onError = () => setError('Stream nicht verfügbar');
-    const onStalled = () => setError('Stream lädt nicht');
     const onPlaying = () => setError(null);
     const onLoadStart = () => setError(null);
 
     video.addEventListener('error', onError);
-    video.addEventListener('stalled', onStalled);
     video.addEventListener('playing', onPlaying);
     video.addEventListener('loadstart', onLoadStart);
 
     return () => {
       video.removeEventListener('error', onError);
-      video.removeEventListener('stalled', onStalled);
       video.removeEventListener('playing', onPlaying);
       video.removeEventListener('loadstart', onLoadStart);
     };

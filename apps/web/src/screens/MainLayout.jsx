@@ -64,8 +64,8 @@ const MainLayout = ({deviceId, credentials, onSwitchDevice}) => {
         setChannelLists(initial);
         safeUpdate({channelLists: initial});
       }
-    });
-  }, [deviceId]);
+    }).catch(() => showError('Gerätedaten konnten nicht geladen werden'));
+  }, [deviceId, safeUpdate, showError]);
 
   const myChannelIds = channelLists[activeListId]?.channelIds || [];
 
